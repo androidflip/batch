@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<description>Configuration file for Batch Jobs</description>
+
+	<context:component-scan
+		base-package="com.flipchase.jobs.reader,com.flipchase.jobs.processor,com.flipchase.jobs.writer,
+		com.flipchase.jobs.service.impl" />
+
+	<batch:job id="simpleJob" abstract="true" job-repository="jobRepository"
+		restartable="true">
+		<batch:listeners>
+			<batch:listener ref="jobLoggingListener"></batch:listener>
+		</batch:listeners>
+	</batch:job>
+
+	<bean id="jobLoggingListener" class="com.flipchase.jobs.listener.JobLoggingListener"
+		scope="prototype" />
+
+	<bean id="skipPolicy" class="com.flipchase.jobs.listener.BatchJobSkipPolicy" />
+
+	<bean id="skipExceptionListener" class="com.flipchase.jobs.listener.SkipExceptionListener"
+		scope="step">
+		<property name="logFileName" value="#{stepExecutionContext['jobName']}"></property>
+	</bean>
+
+	<bean id="stepExecutionListener"
+		class="com.flipchase.jobs.listener.SampleStepExecutionListener">
+	</bean>
+
+	<batch:step id="simpleStep" job-repository="jobRepository"
+		abstract="true">
+		<batch:tasklet start-limit="100" transaction-manager="transactionManager">
+			<batch:chunk commit-interval="10"></batch:chunk>
+		</batch:tasklet>
+	</batch:step>
+
+	<!-- Alerts batchjob Start here -->
+	<batch:job id="alertsBatchJob" parent="simpleJob">
+		<batch:step id="alertsBatchJobStep" parent="simpleStep">
+			<batch:tasklet>
+				<batch:chunk reader="alertsItemReader" processor="alertsItemProcessor"
+					writer="alertsItemWriter">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+
+	<bean id="alertsItemReader" class="com.flipchase.jobs.reader.AlertsItemReader" />
+	<bean id="alertsItemWriter" class="com.flipchase.jobs.writer.AlertsItemWriter" />
+	<bean id="alertsItemProcessor" class="com.flipchase.jobs.processor.AlertsItemProcessor" />
+
+	<!-- Alerts batchjob Ends here -->
+</beans>
