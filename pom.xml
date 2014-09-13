@@ -113,10 +113,20 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<app.mode>dev</app.mode>
-				<log.level>WARN</log.level>
-				<global.properties>C:\deepak\dev\flipchaseServers\batchConfig\batch-jobs.properties</global.properties>
-			</properties>
+                <build.profile.id>dev</build.profile.id>
+                <global.properties>batch-jobs-dev.properties</global.properties>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/main/resources/batch-jobs-dev.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+            </build>
 		</profile>
 		<profile>
 			<id>prod</id>
@@ -126,11 +136,21 @@
 					<value>linux</value>
 				</property>
 			</activation>
-			<properties>
-				<app.mode>prod</app.mode>
-				<log.level>WARN</log.level>
-				<global.properties>C:\deepak\dev\flipchaseServers\batchConfig\batch-jobs.properties</global.properties>
-			</properties>
+			 <properties>
+			 <global.properties>batch-jobs-prod.properties</global.properties>
+                <build.profile.id>prod</build.profile.id>
+            </properties>
+            <build>
+                <filters>
+                    <filter>src/main/resources/batch-jobs-prod.properties</filter>
+                </filters>
+                <resources>
+                    <resource>
+                        <filtering>true</filtering>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                </resources>
+            </build>
 		</profile>
 	</profiles>
 	<properties>
