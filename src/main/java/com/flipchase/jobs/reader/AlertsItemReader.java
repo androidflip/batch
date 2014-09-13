@@ -15,6 +15,7 @@ public class AlertsItemReader implements ItemReader<Boolean> {
 			isWrittenOnce = true;
 			return true;
 		}
+		isWrittenOnce = false;
 		return null;
 	}
 
