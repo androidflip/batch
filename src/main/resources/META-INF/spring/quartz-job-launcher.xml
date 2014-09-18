@@ -10,7 +10,8 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="alertsJobTrigger"/> 
+				<ref bean="alertsForNewCataloguesJobTrigger"/>
+				<ref bean="alertsForExpiredCataloguesJobTrigger"/> 
 			</list>
 		</property>
 	
@@ -34,17 +35,37 @@
 	
 	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 	
-	<bean id="alertsJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="alertsJobDetail" />
-		<property name="cronExpression" value="${AlertscronExpression}" />
+	<!-- Alerts for new catalogues -->
+	<bean id="alertsForNewCataloguesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="alertsForNewCataloguesJobDetail" />
+		<property name="cronExpression" value="${alertsForNewCataloguesCronExpression}" />
 	</bean>
 			
-	 <bean id="alertsJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+	 <bean id="alertsForNewCataloguesJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
 		<property name="jobClass" value="com.flipchase.jobs.MainJobHandler" />
 		<property name="group" value="quartz-batch" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="jobName" value="alertsBatchJob"/>
+				<entry key="jobName" value="alertsForNewCataloguesBatchJob"/>
+				<entry key="jobLocator" value-ref="jobRegistry"/>
+				<entry key="jobLauncher" value-ref="jobLauncher"/>
+				<entry key="jobExplorer" value-ref="jobExplorer" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- Alerts for expired catalogues -->
+	<bean id="alertsForExpiredCataloguesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="alertsForExpiredCataloguesJobDetail" />
+		<property name="cronExpression" value="${alertsForExpiredCataloguesCronExpression}" />
+	</bean>
+			
+	 <bean id="alertsForExpiredCataloguesJobDetail" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="com.flipchase.jobs.MainJobHandler" />
+		<property name="group" value="quartz-batch" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="jobName" value="alertsForExpiredCataloguesBatchJob"/>
 				<entry key="jobLocator" value-ref="jobRegistry"/>
 				<entry key="jobLauncher" value-ref="jobLauncher"/>
 				<entry key="jobExplorer" value-ref="jobExplorer" />

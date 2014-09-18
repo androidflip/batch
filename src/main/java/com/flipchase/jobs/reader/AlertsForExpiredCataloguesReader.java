@@ -6,7 +6,7 @@ import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 
 
-public class AlertsItemReader implements ItemReader<Boolean> {
+public class AlertsForExpiredCataloguesReader implements ItemReader<Boolean> {
 
 	Boolean isWrittenOnce = false;
 	@Override

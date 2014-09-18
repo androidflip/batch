@@ -41,20 +41,37 @@
 		</batch:tasklet>
 	</batch:step>
 
-	<!-- Alerts batchjob Start here -->
-	<batch:job id="alertsBatchJob" parent="simpleJob">
-		<batch:step id="alertsBatchJobStep" parent="simpleStep">
+	<!-- Alerts For New Catalogues batchjob Start here -->
+	<batch:job id="alertsForNewCataloguesBatchJob" parent="simpleJob">
+		<batch:step id="alertsForNewCataloguesStep" parent="simpleStep">
 			<batch:tasklet>
-				<batch:chunk reader="alertsItemReader" processor="alertsItemProcessor"
-					writer="alertsItemWriter">
+				<batch:chunk reader="alertsForNewCatalogueReader" processor="alertsForNewCatalogueProcessor"
+					writer="alertsForNewCatalogueWriter">
 				</batch:chunk>
 			</batch:tasklet>
 		</batch:step>
 	</batch:job>
 
-	<bean id="alertsItemReader" class="com.flipchase.jobs.reader.AlertsItemReader" />
-	<bean id="alertsItemWriter" class="com.flipchase.jobs.writer.AlertsItemWriter" />
-	<bean id="alertsItemProcessor" class="com.flipchase.jobs.processor.AlertsItemProcessor" />
+	<bean id="alertsForNewCatalogueReader" class="com.flipchase.jobs.reader.AlertsForNewCataloguesReader" />
+	<bean id="alertsForNewCatalogueWriter" class="com.flipchase.jobs.writer.AlertsForNewCataloguesWriter" />
+	<bean id="alertsForNewCatalogueProcessor" class="com.flipchase.jobs.processor.AlertsForNewCataloguesProcessor" />
 
-	<!-- Alerts batchjob Ends here -->
+	<!-- Alerts For New Catalogues batchjob Ends here -->
+	
+	<!-- Alerts For Expired Catalogues batchjob Start here -->
+	<batch:job id="alertsForExpiredCataloguesBatchJob" parent="simpleJob">
+		<batch:step id="alertsForExpiredCataloguesStep" parent="simpleStep">
+			<batch:tasklet>
+				<batch:chunk reader="alertsForExpiredCatalogueReader" processor="alertsForExpiredCatalogueProcessor"
+					writer="alertsForExpiredCatalogueWriter">
+				</batch:chunk>
+			</batch:tasklet>
+		</batch:step>
+	</batch:job>
+
+	<bean id="alertsForExpiredCatalogueReader" class="com.flipchase.jobs.reader.AlertsForExpiredCataloguesReader" />
+	<bean id="alertsForExpiredCatalogueWriter" class="com.flipchase.jobs.writer.AlertsForExpiredCataloguesWriter" />
+	<bean id="alertsForExpiredCatalogueProcessor" class="com.flipchase.jobs.processor.AlertsForExpiredCataloguesProcessor" />
+
+	<!-- Alerts For Expired Catalogues batchjob Ends here -->
 </beans>

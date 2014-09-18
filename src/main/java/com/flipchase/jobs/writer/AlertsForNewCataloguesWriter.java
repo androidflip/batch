@@ -10,8 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.flipchase.jobs.service.LogService;
 
-
-public class AlertsItemWriter implements ItemWriter<Object> {
+public class AlertsForNewCataloguesWriter implements ItemWriter<Object> {
 
 	@Value("${broadcastTestMessage}")
 	private String broadcastTestMessage;
