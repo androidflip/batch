@@ -12,8 +12,8 @@ import com.flipchase.jobs.service.LogService;
 
 public class AlertsForNewCataloguesWriter implements ItemWriter<Object> {
 
-	@Value("${broadcastTestMessage}")
-	private String broadcastTestMessage;
+	@Value("${broadcastAlertsForNewCatalogues}")
+	private String broadcastAlertsForNewCatalogues;
 	
 	@Autowired
 	private LogService logService;
@@ -29,7 +29,7 @@ public class AlertsForNewCataloguesWriter implements ItemWriter<Object> {
 
 	
 	private void broadcastMessages() throws IOException {
-		String response = restTemplate.postForObject(broadcastTestMessage, null, String.class);
+		String response = restTemplate.postForObject(broadcastAlertsForNewCatalogues, null, String.class);
 		logService.printLogs(response);
 		System.out.println(response);
 	}
